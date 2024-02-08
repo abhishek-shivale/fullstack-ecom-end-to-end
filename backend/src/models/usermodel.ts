@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema<User>({
         type: String,
         required: [true, 'Please Enter Email'],
         unique: [true, 'Email already exists'],
-        validate: validator.isEmail 
+        validate: validator.default.isEmail 
     },
     password: {
         type: String,

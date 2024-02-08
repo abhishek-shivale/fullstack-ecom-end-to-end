@@ -8,7 +8,7 @@ import { comparePssword, hashedPassword } from "../utils/authUtils.js";
 export const registerUser = asyncFunction(async(req:Request, res:Response, next:NextFunction)=>{    
    
     const {name, email, password, role, phoneNumber, address } = req.body
-   
+    
     if(!name ||  !email || !password || !phoneNumber || !address){
        return SendError('Something Is missing', res, 400)
     }
@@ -22,13 +22,14 @@ export const registerUser = asyncFunction(async(req:Request, res:Response, next:
     const hashpassword = await hashedPassword(password) 
    
     const user = await userModel.create({
-        name,
-        email,
+        email:email,
+        name:name,
         password: hashpassword,
+        address: address,
         role,
-        phoneNumber
+        phoneNumber: phoneNumber
     })
-   
+
     await user.save()
    
     SendToken(user._id,res,201)
