@@ -5,13 +5,11 @@ interface User extends Document {
     name: string;
     email: string | undefined;
     password: string;
-    photo: string;
+    address: string
     role: 'admin' | 'user';
-    gender: 'male' | 'female';
-    dob: Date; 
+    phoneNumber: Number;
     createdAt: Number;
     updatedAt: Number;
-    age: Number;
 }
 
 
@@ -30,27 +28,18 @@ const userSchema = new mongoose.Schema<User>({
         type: String,
         required: [true, 'Please Enter Password']
     },
-    photo: {
+    address: {
         type: String,
-        required: [true, 'Please Add Your Photo']
+        required: [true, 'Please Enter address']
     },
     role: {
         type: String,
         enum: ['admin', 'user'], 
         default: 'user'
     },
-    gender: {
-        type: String,
-        enum: ['male', 'female'], 
-        required: [true, 'Please Enter Gender']
-    },
-    dob: {
-        type: Date,
-        required: [true, "Please enter Date of Birth"],
-    },
-    age: {
+    phoneNumber: {
         type: Number,
-        required: [true, 'Please Enter Age']
+        required: [true, 'Please Enter phoneNumber']
     }
 }, {
     timestamps: true

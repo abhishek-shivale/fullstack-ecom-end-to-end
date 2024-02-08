@@ -1,15 +1,15 @@
 import userModel from "../models/usermodel.js";
-import bcrypt from 'bcrypt'
 import { Request, NextFunction, Response } from "express"
 import asyncFunction from "../middlewares/asyncFunction.js";
 import SendToken from "../utils/sendToken.js";
 import SendError from "../utils/SendError.js";
+import { comparePssword, hashedPassword } from "../utils/authUtils.js";
 
 export const registerUser = asyncFunction(async(req:Request, res:Response, next:NextFunction)=>{    
    
-    const {name, email, password, gender, dob, photo, role, age} = req.body
+    const {name, email, password, role, phoneNumber, address } = req.body
    
-    if(!{name, email, password, gender, dob, photo, role, age}){
+    if(!name ||  !email || !password || !phoneNumber || !address){
        return SendError('Something Is missing', res, 400)
     }
    
@@ -19,17 +19,14 @@ export const registerUser = asyncFunction(async(req:Request, res:Response, next:
        return SendError('Already have an account',res,400)
     }
    
-    const hashpassword = await bcrypt.hash(password,10)   
+    const hashpassword = await hashedPassword(password) 
    
     const user = await userModel.create({
         name,
         email,
         password: hashpassword,
-        gender,
-        dob,
-        photo,
         role,
-        age
+        phoneNumber
     })
    
     await user.save()
@@ -47,7 +44,7 @@ export const loginUser = asyncFunction(async(req:Request, res:Response, next:Nex
       return SendError('Email Not Found', res, 404)
     }
 
-    const passwordCheck = await bcrypt.compare(password, userExists.password)
+    const passwordCheck = await comparePssword(password, userExists.password)
 
     if(!passwordCheck){
         return SendError('invalid credentials', res, 400)
@@ -70,43 +67,58 @@ export const updateUserPassword = asyncFunction(async(req:CustomRequest, res:Res
     if(!user){
        return SendError('user Not found', res, 411)
     }
-    const isMatch = await bcrypt.compare(oldPassword, user?.password) 
+    const isMatch = await comparePssword(oldPassword, user?.password) 
 
     if(!isMatch){
         return SendError('Provided Password Dosn\'t match', res, 411 )
     }
-    const hashedPssword = await bcrypt.hash(newPassword, 10)
+    const hashedPssword = await hashedPassword(newPassword)
     await userModel.findOneAndUpdate({ _id: id }, { password: hashedPssword });
-    SendToken(user._id, res, 201)
+    res.status(200).json({
+        success: true,
+        message:'Password is Updated'
+    })
 })
 
+interface User{
+    name: string
+    email: string
+    phoneNumber: number
+    address: string
+}
 export const updateProfile = asyncFunction(async(req:CustomRequest, res:Response, next:NextFunction)=>{
     const id = req.id
-    const {name, email, dob, gender,photo, age} = req.body
     const user = await userModel.findById(id)
     if(!user){
        return SendError('User Not Found', res, 411)
     }
-    if(name !== undefined){
-        user.name = name
-    }
-    if(email !== undefined){
-        user.email = email
-    }
-    if(dob !== undefined){
-        user.dob = dob
-    }
-    if(gender !== undefined){
-        user.gender = gender
-    }
-    if(photo !== undefined){
-        user.photo = photo
-    }
-    if(age !== undefined){
-        user.age = age
-    }
+    
+    const bodyKeys: Array<keyof User> = ['name', 'email', 'phoneNumber', 'address'];
+
+    bodyKeys.forEach((key)=>{
+        if(req.body[key]){
+            user[key] = req.body.key
+        }
+    })
     await user.save()
-    SendToken(user._id, res, 201)
+    res.status(200).json({
+        success: true,
+        message: 'Profile Update SuccessFully'
+    })
+})
+
+export const logoutUser = asyncFunction(async(req:CustomRequest, res:Response, next:NextFunction)=>{
+    const id = req.id; 
+    res.cookie('token',null,{
+        expires: new Date(Date.now()),
+        httpOnly:true,
+        secure:true
+    })
+    res.status(200).json({
+        success: true,
+        message: "Logged Out"
+    })
+
 })
 
 export const deleteUser = asyncFunction(async(req:CustomRequest, res:Response, next:NextFunction)=>{

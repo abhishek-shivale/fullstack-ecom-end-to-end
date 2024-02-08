@@ -5,7 +5,11 @@ const asyncFunction = (errorFunction:Function) =>{
         errorFunction(req,res,next)
     }catch(err){
         console.log(err)
-        next(err)
+        res.status(500).json({
+            success:false,
+            message: 'Error in async middelware',
+            error: err
+        })
     }
    }
 }

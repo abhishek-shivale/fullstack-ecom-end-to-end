@@ -3,12 +3,14 @@ import dotenv from 'dotenv'
 import mongoConnect from './configs/database.js'
 import userRouter from './routes/userRoutes.js'
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan'
 
 
 dotenv.config({})
 const app = express()
 
 mongoConnect(process.env.MONGO_URI)
+app.use(morgan('dev'))
 app.use(express.json())
 app.use(cookieParser())
 app.use('/api/v1',userRouter)
