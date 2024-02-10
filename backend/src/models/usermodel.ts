@@ -16,7 +16,7 @@ interface User extends Document {
 const userSchema = new mongoose.Schema<User>({
     name: {
         type: String,
-        required: [true, 'Please Enter Name']
+        required: [false, 'Please Enter Name']
     },
     email: {
         type: String,
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema<User>({
     },
     address: {
         type: String,
-        required: [true, 'Please Enter address']
+        required: [false, 'Please Enter address']
     },
     role: {
         type: String,

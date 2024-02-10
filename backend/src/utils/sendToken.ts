@@ -8,8 +8,8 @@ const SendToken = (id:number, res:Response, statusCode:number) => {
         expires: new Date(
             Date.now() + 7 * 24 * 60 * 60 * 1000
         ),
-        httpOnly:true,
-        secure:true
+        // httpOnly:true,
+        // secure:true
     }).status(statusCode).json({
         success: true,
         token

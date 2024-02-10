@@ -6,7 +6,7 @@ interface CustomRequest extends ExpressRequest {
     id?: number; 
 }
 const ProtectedRoute = (req: CustomRequest, res: Response, next: NextFunction) => {
-    const token:string | undefined = req.body.token; 
+    const token:string | undefined = req.cookies.token; 
 
     if (!token) {
          SendError('Token Missing', res, 400);
