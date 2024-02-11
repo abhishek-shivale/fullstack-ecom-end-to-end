@@ -9,7 +9,10 @@ import morgan from 'morgan'
 
 dotenv.config({})
 const app = express()
-app.use(cors())
+app.use(cors({
+    credentials:true,
+    origin:`http://localhost:5173`
+}))
 
 mongoConnect(process.env.MONGO_URI)
 app.use(morgan('dev'))

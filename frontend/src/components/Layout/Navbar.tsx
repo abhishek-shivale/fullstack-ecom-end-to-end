@@ -7,7 +7,7 @@ interface propss {
 }
 function Navbar() {
     // const Navigate = useNavigate()
-    const token = localStorage.getItem('token');
+    const token = window.co;
     function LoginCheck(props: propss) {
         return (
           <>

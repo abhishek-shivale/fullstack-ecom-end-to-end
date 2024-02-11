@@ -1,27 +1,23 @@
 import { LoginReq } from "@/api/auth"
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react"
-import { resType } from "@/types";
 import { useNavigate } from "react-router-dom";
 
 function login() {
-
+  // const logged = useRecoilValue(loggedIn)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const onClickHandle = async() =>{
-   const req:any = await LoginReq(email,password)
-   const data = await req.data
-   if(data?.success === true){
-    toast.success('You Logged in');
-    window.localStorage.setItem('token',data.token)
-    setTimeout(()=>{navigate('/')},1000)
-   }else if(data?.success === false){
-    toast.error(data.error)
-   }else{
-    toast.error('Login Failed')
-   }
+    try {
+      const req:any = await LoginReq(email,password)
+      toast.success('You Logged in');
+      setTimeout(()=>{navigate('/')},1000)
+    } catch (error:any) {      
+      toast.error(error.response.data.error)
+    }
+
   }
 
  

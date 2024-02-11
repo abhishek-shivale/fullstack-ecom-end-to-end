@@ -1,6 +1,5 @@
 import mongoose, { Document } from "mongoose";
 import validator from 'validator'
-
 interface User extends Document {
     name: string;
     email: string | undefined;

@@ -8,3 +8,4 @@ class ErrorHandler extends Error{
     }
 }
 export default ErrorHandler
+// new ErrorHandler('oeaiudh', 201)
