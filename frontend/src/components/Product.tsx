@@ -3,27 +3,21 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-
+import products from './products.json' 
 function Product() {
     const [data, setData] = useState<any>([]);
     const dispatch = useDispatch()
-    async function fetchData() {
-      try {
-        const response = await axios.get('https://fakestoreapi.com/products');
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-    { console.log(data)}
-  
-    useEffect(() => {
-      fetchData();
-    }, []);
+   useEffect(()=>{
+    setData(products);
+    console.log(data);
+    
+   },[])
+    
+    
   return (
     <div className='flex gap-3 flex-wrap mx-16'>
         <Toaster  position="bottom-right"  reverseOrder={false}/>
-{      data!==null?data.map((pro:any)=>(
+{      data.map((pro:any)=>(
                 <div key={pro?.id} className='h-80 w-64 border my-6 mx-4'>
             <div className='mb-2 relative'>
             <div className='bg-gray-700 flex justify-center items-center z-10 opacity-0 hover:opacity-100 absolute h-56 w-full'>
@@ -49,7 +43,7 @@ function Product() {
                 <p className='text-xs font-bold text-green-600'>{50}% OFF</p>
             </div>
         </div>              
-            )):<></>
+            ))
         }
     </div>
   )
