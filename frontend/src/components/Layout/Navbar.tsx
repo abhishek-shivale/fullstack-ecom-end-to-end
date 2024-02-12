@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import {Link} from 'react-router-dom'
 interface propss {
     firstButton:string,
@@ -7,7 +8,9 @@ interface propss {
 }
 function Navbar() {
     // const Navigate = useNavigate()
-    const token = window.co;
+    let token = useSelector((state:any)=> state.globalState)
+    token?<>{token = true}</>:token=false
+    
     function LoginCheck(props: propss) {
         return (
           <>

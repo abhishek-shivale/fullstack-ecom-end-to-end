@@ -1,10 +1,12 @@
-// import {configureStore} from '@reduxjs/toolkit'
-// import { setupListeners } from '@reduxjs/toolkit/query'
+import {configureStore} from '@reduxjs/toolkit'
+import globalReducer from './redux-reducer/global'
 
-// export const store = configureStore({
-//     reducer:{
 
-//     }
-// })
+const store = configureStore({
+    reducer:{
+        globalState:globalReducer
+    }
+})
 
-// setupListeners(store.dispatch)
+
+export default store

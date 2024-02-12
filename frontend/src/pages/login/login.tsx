@@ -2,17 +2,21 @@ import { LoginReq } from "@/api/auth"
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { checkLoggedIn } from "@/redux-reducer/global";
 
 function login() {
   // const logged = useRecoilValue(loggedIn)
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const onClickHandle = async() =>{
     try {
-      const req:any = await LoginReq(email,password)
+      await LoginReq(email,password)
       toast.success('You Logged in');
+      dispatch(checkLoggedIn())
       setTimeout(()=>{navigate('/')},1000)
     } catch (error:any) {      
       toast.error(error.response.data.error)
@@ -24,7 +28,7 @@ function login() {
 
   return (
     <div>
-        <Toaster  position="top-center"  reverseOrder={false}/>
+        <Toaster  position="bottom-right"  reverseOrder={false}/>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />

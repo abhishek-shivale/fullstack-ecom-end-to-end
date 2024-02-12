@@ -1,13 +1,12 @@
-import React from 'react'
+import { Provider } from 'react-redux'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import {RecoilRoot} from 'recoil'
+import store from './store.ts'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <RecoilRoot >
+    <Provider store={store}>
     <App />
-  </RecoilRoot>
- 
+    </Provider>
 )

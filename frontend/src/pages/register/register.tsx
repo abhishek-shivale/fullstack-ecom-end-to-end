@@ -1,23 +1,31 @@
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react"
-import { resType } from '@/types';
+// import { resType } from '@/types';
 import { RegisterReq } from '@/api/auth';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { checkLoggedIn } from '@/redux-reducer/global';
 
 
 function register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [phoneNo, setPhoneNo] = useState(0)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+   
   const onClickHandle = async() =>{
    const req:any = await RegisterReq(email,password,phoneNo)
    const data  = await req.data
+
    if(data?.success == true){
     toast.success('Your Account has been created');
+    dispatch(checkLoggedIn())
     navigate('/completeprofile')
+
    }else if(data?.success == false){
     toast.error(data?.error)
+
    }else{
     toast.error('Register Failed')
    }
