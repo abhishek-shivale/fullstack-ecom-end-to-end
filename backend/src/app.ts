@@ -5,6 +5,7 @@ import mongoConnect from './configs/database.js'
 import userRouter from './routes/userRoutes.js'
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan'
+import productRouter from './routes/productRouter.js'
 
 
 dotenv.config({})
@@ -19,6 +20,8 @@ app.use(morgan('dev'))
 app.use(cookieParser())
 app.use(express.json())
 app.use('/api/v1',userRouter)
+
+app.use('/api/v1/product', productRouter)
 
 const port = process.env.PORT
 app.listen(port, ()=>{
