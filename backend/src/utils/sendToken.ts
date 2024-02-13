@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
 import { Response } from 'express'
 
-const SendToken = (id:number, res:Response, statusCode:number) => {
+const SendToken = (id:number, role:string, res:Response, statusCode:number) => {
     const key = 'Ecommerce'
-    const token =  jwt.sign({id:id},key)
+    const token =  jwt.sign({id:id,role:role},key)
      res.cookie('token', token, {
         // domain: 'localhost',
         // path: '/',

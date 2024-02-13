@@ -17,7 +17,7 @@ export const getAllProduct = asyncFunction(async(req:Request,res:Response,next:N
 
 //not neccesssary 
 export const getProduct = asyncFunction(async(req:Request,res:Response,next:NextFunction)=>{
-    const id = req.params.product
+    const id = req.query.product
     if(!id){
         SendError('Product Id Not found',res,411)
     }
@@ -43,7 +43,31 @@ export const productIncart = asyncFunction(async(req:Request,res:Response,next:N
 //Search Product and Filter /search?searchterm=&category=&price=&rating=
 
 export const searchProduct = asyncFunction(async(req:Request,res:Response,next:NextFunction)=>{
+    let query: any = {}; 
+
+    if (req.query.searchterm) {
+        query.title = { $regex: req.query.searchterm, $options: 'i' };
+    }
     
+    if (req.query.category) {
+        query.category = req.query.category;
+    }
+    
+    if (req.query.price) {
+        const priceRange: string = req.query.price as string; 
+        const [minPrice, maxPrice] = priceRange.split('-').map(Number);
+        query.price = { $gte: minPrice, $lte: maxPrice };
+    }
+    
+    if (req.query.rating) {
+        const minRating = Number(req.query.rating);
+        query['rating.rate'] = { $gte: minRating };
+    }
+    const products = await productModel.find(query);
+    res.status(201).json({
+        success:true,
+        products
+    });
 })
 
 
@@ -79,7 +103,7 @@ interface Product{
     rating:Rating
 }
 export const editProduct = asyncFunction(async(req:Request, res:Response, next:NextFunction)=>{  
-    const id = req.params.productid
+    const id = req.query.productid
     const product:any = await productModel.findOne({id})
     if(!product){
         return SendError('Product Not found',res,411)

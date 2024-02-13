@@ -29,7 +29,7 @@ export const registerUser = asyncFunction(async(req:Request, res:Response, next:
 
     await user.save()
    
-    SendToken(user._id,res,201)
+    SendToken(user._id,user.role,res,201)
 })
 
 export const loginUser = asyncFunction(async(req:Request, res:Response, next:NextFunction)=>{
@@ -47,7 +47,7 @@ export const loginUser = asyncFunction(async(req:Request, res:Response, next:Nex
     if(!passwordCheck){
         return SendError('invalid credentials', res, 400)
     }    
-    SendToken(userExists._id,res,201)
+    SendToken(userExists._id,userExists.role,res,201)
 })
 
 interface CustomRequest extends Request {
