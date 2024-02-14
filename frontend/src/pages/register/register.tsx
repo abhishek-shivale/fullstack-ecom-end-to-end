@@ -21,7 +21,8 @@ function register() {
    if(data?.success == true){
     toast.success('Your Account has been created');
     dispatch(checkLoggedIn())
-    navigate('/completeprofile')
+    window.localStorage.setItem('loggedIn', 'true')
+    navigate('/user/me')
 
    }else if(data?.success == false){
     toast.error(data?.error)

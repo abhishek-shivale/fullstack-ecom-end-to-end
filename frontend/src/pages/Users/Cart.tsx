@@ -3,6 +3,7 @@ import CartProduct from '../../components/CartProduct'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart } from '@/redux-reducer/global'
 import toast, { Toaster } from 'react-hot-toast'
+import Button from '@/components/Button'
 
 function Cart() {
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -18,10 +19,10 @@ function Cart() {
 
   
   return (
-
+    <><Button title={`Total Price : $${`${totalPrice}`}`} />
     <div className='flex gap-3 flex-wrap mx-16'>
         {/* <CartProduct /> */}
-        <h1>totalPrice : ${`${totalPrice}`}</h1>
+        
         <Toaster  position="bottom-right"  reverseOrder={false}/>
         {
           productInTheCart.cart.map((pro:any)=>(
@@ -50,11 +51,12 @@ function Cart() {
                 <p className='text-xs font-bold text-green-600'>{50}% OFF</p>
             </div>
         </div>  
+        
           ))
         }
       
     </div>
-
+    </>
   )
 }
 

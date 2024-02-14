@@ -9,7 +9,8 @@ interface propss {
 function Navbar() {
     // const Navigate = useNavigate()
     let token = useSelector((state:any)=> state.globalState)
-    token?<>{token = true}</>:token=false
+    const auth = window.localStorage.getItem('loggedIn')
+    auth ?<>{token = true}</>:token=false
     
     function LoginCheck(props: propss) {
         return (
@@ -51,13 +52,15 @@ function Navbar() {
             </div>
             <div className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                    <Link to={'/home'}>
+                    <Link to={'/'}>
                     <li>
                         <a href="#" className="block py-2 pr-4 pl-3 text-white rounded bg-indigo-700 lg:bg-transparent lg:text-indigo-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
                     </li>
                     </Link>
                     <li>
-                        <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-indigo-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
+                        <Link to={'/search'}>
+                        <a className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-indigo-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Search</a>
+                        </Link>
                     </li>
                     <li>
                         <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-indigo-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Marketplace</a>

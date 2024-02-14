@@ -16,6 +16,7 @@ function login() {
     try {
       await LoginReq(email,password)
       toast.success('You Logged in');
+      window.localStorage.setItem('loggedIn', 'true')
       dispatch(checkLoggedIn())
       setTimeout(()=>{navigate('/')},1000)
     } catch (error:any) {      

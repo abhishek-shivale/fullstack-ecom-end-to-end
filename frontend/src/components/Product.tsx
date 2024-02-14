@@ -1,11 +1,12 @@
 import { addToCart } from '@/redux-reducer/global';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import products from './products.json' 
 function Product() {
     const [data, setData] = useState<any>([]);
+    const display = useRef<any>(null)
     const dispatch = useDispatch()
    useEffect(()=>{
     setData(products);
@@ -20,11 +21,14 @@ function Product() {
 {      data.map((pro:any)=>(
                 <div key={pro?.id} className='h-80 w-64 border my-6 mx-4'>
             <div className='mb-2 relative'>
-            <div className='bg-gray-700 flex justify-center items-center z-10 opacity-0 hover:opacity-100 absolute h-56 w-full'>
+            <div ref={display} className='bg-gray-700 flex justify-center items-center z-10 opacity-0 hover:opacity-100 absolute h-56 w-full'>
             <svg 
+            
             onClick={
                 ()=>{
                     dispatch(addToCart(pro))
+                  display.current.style.display = 'none';
+
                     toast.success('Product Added to cart')
                 }
             }
