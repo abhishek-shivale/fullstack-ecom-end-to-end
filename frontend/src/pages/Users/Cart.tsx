@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import CartProduct from '../../components/CartProduct'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart } from '@/redux-reducer/global'
 import toast, { Toaster } from 'react-hot-toast'
@@ -9,7 +8,6 @@ function Cart() {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const dispatch = useDispatch()
   const productInTheCart = useSelector((state:any)=> state.globalState)
-  console.log(productInTheCart);
   useEffect(() => {
     const totalPrice = productInTheCart.cart.reduce((accumulator: number, currentProduct: any) => {
         return accumulator + currentProduct.price;

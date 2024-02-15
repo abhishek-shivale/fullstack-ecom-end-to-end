@@ -15,15 +15,15 @@ function Profilecomponent() {
         // setUserData(toString(e.target.value))
       };
 
-    useEffect(()=>{
-        const bodyKeys: Array<keyof User> = ['name', 'email', 'phoneNumber', 'address'];
+    // useEffect(()=>{
+    //     const bodyKeys: Array<keyof User> = ['name', 'email', 'phoneNumber', 'address'];
 
-        bodyKeys.forEach((key)=>{
-            if([key]){
-                [] = key
-            }
-        })
-    })
+    //     bodyKeys.forEach((key)=>{
+    //         if([key]){
+    //             [] = key
+    //         }
+    //     })
+    // })
 
     return (      <>    
      <div>

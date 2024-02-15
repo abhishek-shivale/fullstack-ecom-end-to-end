@@ -1,7 +1,13 @@
+import { z } from 'zod';
+
+ const LoginSchema = z.object({
+    username: z.string().email(),
+    password: z.string().min(8).max(64),
+});
 import { LoginReq } from "@/api/auth"
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkLoggedIn } from "@/redux-reducer/global";
 
@@ -13,15 +19,27 @@ function login() {
   const navigate = useNavigate()
 
   const onClickHandle = async() =>{
-    try {
-      await LoginReq(email,password)
-      toast.success('You Logged in');
-      window.localStorage.setItem('loggedIn', 'true')
-      dispatch(checkLoggedIn())
-      setTimeout(()=>{navigate('/')},1000)
-    } catch (error:any) {      
-      toast.error(error.response.data.error)
+    const userData = {
+      username: email,
+      password: password,
+  };
+   try {
+    const value = LoginSchema.parse(userData)
+    if (value) {
+      try {
+        await LoginReq(email,password)
+        toast.success('You Logged in');
+        window.localStorage.setItem('loggedIn', 'true')
+        dispatch(checkLoggedIn())
+        setTimeout(()=>{navigate('/')},1000)
+      } catch (error:any) {      
+        return toast.error(error.response.data.error)
+      }
     }
+   } catch (error:any) {
+    console.log(error.message);
+    return toast.error('Enter valid Input');
+   }
 
   }
 
@@ -47,7 +65,7 @@ function login() {
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                  <a  className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
                 </div>
               </div>
               <div className="mt-2">
@@ -60,7 +78,9 @@ function login() {
           </div>
           <p className="mt-10 text-center text-sm text-gray-500">
             Not have an account?
-            <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Create Your account here</a>
+            <Link to={'/register'}>
+            <a  className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Create Your account here</a>
+            </Link>
           </p>
         </div>
       </div>

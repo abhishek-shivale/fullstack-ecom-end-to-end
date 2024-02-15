@@ -5,13 +5,13 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import products from './products.json' 
 function Product() {
+    let [cartItems,setCartitem]:any = useState([])
     const [data, setData] = useState<any>([]);
     const display = useRef<any>(null)
     const dispatch = useDispatch()
    useEffect(()=>{
     setData(products);
     console.log(data);
-    
    },[])
     
     
@@ -28,8 +28,10 @@ function Product() {
                 ()=>{
                     dispatch(addToCart(pro))
                   display.current.style.display = 'none';
+                  setCartitem((pre:any)=>[...pre,pro])
+                  toast.success('Product Added to cart')
+                  window.localStorage.setItem('cart', JSON.stringify(cartItems))
 
-                    toast.success('Product Added to cart')
                 }
             }
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-14 z-90 h-14 cursor-pointer text-black">
