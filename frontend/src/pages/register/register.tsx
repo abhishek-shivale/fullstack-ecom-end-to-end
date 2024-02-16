@@ -1,6 +1,6 @@
 import toast, { Toaster } from 'react-hot-toast';
 import { useEffect, useState } from "react"
-// import { resType } from '@/types';
+import { useForm } from "react-hook-form"
 import { RegisterReq } from '@/api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,20 @@ function register() {
   const [phoneNo, setPhoneNo] = useState(0)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-   
+  
+  type FormData = {
+    email: string
+    password: string,
+    phoneNo: string
+  }
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>()
+
   const onClickHandle = async() =>{
    const req:any = await RegisterReq(email,password,phoneNo)
    const data  = await req.data
@@ -49,9 +62,28 @@ function register() {
               </div>
             </div> */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Email address
+              </label>
               <div className="mt-2">
-                <input onChange={(e)=>{setEmail(e.target.value)}} id="email" name="email" type="email" autoComplete="email" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                <input
+                  id="email"
+                  {...register('email', {
+                    required: 'email is required',
+                    pattern: {
+                      value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
+                      message: 'email not valid',
+                    },
+                  })}
+                  type="email"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                {errors.email && (
+                  <p className="text-red-500">{errors.email.message}</p>
+                )}
               </div>
             </div>
             <div>
