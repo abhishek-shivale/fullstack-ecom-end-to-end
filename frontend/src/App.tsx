@@ -1,5 +1,5 @@
-import LoginComponent from './pages/Users/login/login.tsx'
-import RegisterComponent from './pages/Users/register/register.tsx'
+import LoginComponent from './pages/login/login'
+import RegisterComponent from './pages/register/register'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Navbar from './components/Layout/Navbar'
 import Footer from './components/Layout/Footer'

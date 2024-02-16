@@ -12,14 +12,15 @@ return  axios.post(`${baseUrl}/api/v1/login`, {
   });
 
 };
-export const RegisterReq = async (email:string,password:string,phoneNumber:string) => {
-  let value = parseInt(phoneNumber)  
-
-  return await axios.post(`${baseUrl}/api/v1/register`, {
-    email,
-    password,
-    phoneNumber:value
-  });
-    
+export const RegisterReq = async (email:string,password:string,phoneNumber:number) => {
+    try {
+       return await axios.post(`${baseUrl}/api/v1/register`, {
+          email,
+          password,
+          phoneNumber
+        });
+      } catch (error) {
+        return error
+      }
 };
 
